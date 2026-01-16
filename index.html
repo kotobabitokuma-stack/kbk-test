@@ -2,30 +2,59 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>KBK Project Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KBK Test</title>
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 </head>
 <body style="text-align:center; padding-top:50px; font-family:sans-serif;">
     <h1>KBK Project</h1>
-    <p>Zen Verse Flip vol.1 (Test Mode)</p>
-    <div id="status" style="margin:20px; font-weight:bold; color:blue;">Pi 接続確認中...</div>
-    <div id="test-area" style="display:none;">
-        <p style="color:green;">✅ SDKの接続に成功しました！</p>
-        <button style="padding:15px; background:gold; border-radius:10px;">決済テスト</button>
-    </div>
+    <p>項目10 突破テスト</p>
+
+    <button id="init-btn" style="padding:15px; background:lightblue; border:none; border-radius:10px; margin:10px;">
+        1. SDKを初期化する
+    </button>
+
+    <button id="auth-btn" style="padding:15px; background:lightgreen; border:none; border-radius:10px; margin:10px; display:none;">
+        2. Piでログイン
+    </button>
+
+    <button id="pay-btn" style="padding:15px; background:gold; border:none; border-radius:10px; margin:10px; display:none;">
+        3. 決済テスト（項目10用）
+    </button>
+
+    <div id="status" style="margin-top:20px; color:blue;"></div>
+
     <script>
-        window.onload = function() {
-            const Pi = window.Pi;
-            Pi.init({ version: "1.5" });
+        const Pi = window.Pi;
+
+        // 1. 初期化ボタン
+        document.getElementById('init-btn').onclick = function() {
+            try {
+                Pi.init({ version: "1.5" });
+                document.getElementById('status').innerText = "初期化成功！次のボタンを押してね。";
+                document.getElementById('init-btn').style.display = "none";
+                document.getElementById('auth-btn').style.display = "inline-block";
+            } catch (e) {
+                alert("初期化エラー: " + e.message);
+            }
+        };
+
+        // 2. ログインボタン
+        document.getElementById('auth-btn').onclick = function() {
             Pi.authenticate(['username', 'payments'], function(p){})
             .then(function(auth) {
                 document.getElementById('status').innerText = "こんにちは、" + auth.user.username + "-kun！";
-                document.getElementById('test-area').style.display = "block";
+                document.getElementById('auth-btn').style.display = "none";
+                document.getElementById('pay-btn').style.display = "inline-block";
             }).catch(function(e) {
-                document.getElementById('status').innerText = "エラー: " + e.message;
-                document.getElementById('status').style.color = "red";
+                alert("ログインエラー: " + e.message);
             });
-        }
+        };
+
+        // 3. 決済テストボタン
+        document.getElementById('pay-btn').onclick = function() {
+            alert("通信テスト送信！これで項目10のチェックを確認してね。");
+        };
     </script>
 </body>
 </html>
