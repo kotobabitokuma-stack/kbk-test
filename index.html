@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>KBK Project Test</title>
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+</head>
+<body style="text-align:center; padding-top:50px; font-family:sans-serif;">
+    <h1>KBK Project</h1>
+    <p>Zen Verse Flip vol.1 (Test Mode)</p>
+    <div id="status" style="margin:20px; font-weight:bold; color:blue;">Pi 接続確認中...</div>
+    <div id="test-area" style="display:none;">
+        <p style="color:green;">✅ SDKの接続に成功しました！</p>
+        <button style="padding:15px; background:gold; border-radius:10px;">決済テスト</button>
+    </div>
+    <script>
+        window.onload = function() {
+            const Pi = window.Pi;
+            Pi.init({ version: "1.5" });
+            Pi.authenticate(['username', 'payments'], function(p){})
+            .then(function(auth) {
+                document.getElementById('status').innerText = "こんにちは、" + auth.user.username + "-kun！";
+                document.getElementById('test-area').style.display = "block";
+            }).catch(function(e) {
+                document.getElementById('status').innerText = "エラー: " + e.message;
+                document.getElementById('status').style.color = "red";
+            });
+        }
+    </script>
+</body>
+</html>
